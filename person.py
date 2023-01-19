@@ -14,3 +14,9 @@ class Person:
 
     def __str__(self):
         return f"{self.get_name()}"
+
+    def get_first_name(self):
+        return self.__first_name
+
+    def get_last_name(self):
+        return self.__last_name

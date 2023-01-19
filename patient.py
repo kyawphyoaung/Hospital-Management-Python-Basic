@@ -1,7 +1,5 @@
 from person import Person
 
-
-
 class Patient(Person):
     def __init__(self, first_name, last_name, patient_id, age):
         super().__init__(first_name, last_name)

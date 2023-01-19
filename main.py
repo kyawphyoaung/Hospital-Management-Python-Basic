@@ -1,10 +1,14 @@
+import csv
 from doctor_manager import DoctorManager
 from patient_manager import PatientManager
+from bill_manager import Bill_Manager
 
 doctor_manage=DoctorManager()
 doctor_manage.load_doctor_detail()
 patient_manage=PatientManager()
 patient_manage.load_patient_detail()
+bill_manage=Bill_Manager()
+bill_manage.load_patients_bill()
 
 def display_all_doctors(doctors):
     for index, doctor in enumerate(doctors):
@@ -37,6 +41,10 @@ def display_all_patients(patients):
     for index,patient in enumerate(patients):
         print(f"{index:2} - {patient}")
 
+# def display_ledger(patients):
+#     for patient in patients:
+#         print([patient.get_name(),patient.get_id(),patient.get_age()])
+
 def add_new_patients(patient_manage):
     patient_first_name=input("Please enter the patient's first name ---> ")
     patient_last_name=input("Please enter the patient's last name ---> ")
@@ -61,14 +69,52 @@ def show_option_patient(patient_menu):
         print("------Go back to the main-------")
     print("")
 
-# def hospital_bill_func():
-    
+def hospital_bill_fun():
+    print("Which patient do you want to pay the bill?")
+    patient_id = input("Enter the patient id to proceed\n")
+    selected_patient = []
+
+    for patient in patient_manage.patients:
+        if patient.get_id() == patient_id:
+            selected_patient.append(patient)
+
+    if(selected_patient):
+        for patient_data in selected_patient:
+            print(patient_data)
+        total_fee = 0
+        medicine_fee = int(input("Medicine Fee: $"))
+        doctor_fee = int(input("Doctor Fee: $"))
+        room_fee = int(input("Room Fee: $"))
+        total_fee = medicine_fee + doctor_fee + room_fee
+
+        for s_patient in selected_patient:
+            bill_manage.add_new_bill(s_patient.get_first_name(),s_patient.get_last_name(),s_patient.get_id(),str(medicine_fee),str(doctor_fee),str(room_fee),str(total_fee))
+        print("Total Fee:",total_fee)
+        print("Payment Successfull!")
+    else:
+        print("Your patient is not found in database!")
+
+def save_data():
+    dataset = open("patient_detail.csv", "w")
+    dataset.write("first_name,last_name,patient_id,age,date_of_birth,admit_date,discharge_date\n")
+    for f, b in zip(patient_manage.patients, patient_manage.date_type):
+        dataset.write("{},{},{},{},{},{},{}\n".format(f.get_first_name(),f.get_last_name(),f.get_id(),f.get_age(),b.get_date_of_birth(),b.get_admit_date(),b.get_discharge_date().strip('\n')))
+    print("Patient Data saved successfully!")
+    dataset.close()
+
+    dataset = open("pay_bill.csv", "w")
+    dataset.write("first_name,last_name,patient_id,medicine_fee,doctor_fee,room_fee,total_fee\n")
+    for index,record in enumerate(bill_manage.ledger):
+        dataset.write("{},{},{},{},{},{},{}\n".format(record.get_bill_first_name(),record.get_bill_last_name(),record.get_bill_patient_id(),record.get_medicine_fee(),record.get_doctor_fee(),record.get_room_fee(),record.get_total_fee().strip('\n')))
+    print("Bill Data saved successfully!")
+    dataset.close()
 
 def main():
     menu = f"1. Doctor detail\n" \
            f"2. Patient detail\n" \
            f"3. Pay bill\n" \
-           f"4. Make a exit\n" \
+           f"4. Display Bill Records\n" \
+           f"5. Make a exit\n" \
            f">> "
     doctor_menu = f"1. Show all doctor details\n" \
                   f"2. Add doctor details\n" \
@@ -79,21 +125,21 @@ def main():
                  f"3. Discharge the patient\n" \
                  f"4. Go back to the main\n"
     option = input(menu)
-    while option != "4":
+    while option != "5":
         if option == "1":
             show_option_doctor(doctor_menu)
         elif option == "2":
             show_option_patient(patient_menu)
         elif option == "3":
-            # hospital_bill_func()
-            print("Which patient do you want to pay the bill?")
-            patient_id = input("Enter the patient id to proceed\n")
-            for patient in patient_manage.patients:
-                if patient.get_id() == patient_id:
-                    print(patient)
-
+            hospital_bill_fun()
+        elif option == "4":
+            print('{:5}| {:7}| {:12}| {:12}| {:12}| {:12}'.format("ID","Name","Medicine Fee","Doctor Fee","Room Fee","Total Fee"))
+            for index,each_record in enumerate(bill_manage.ledger):
+                print(f"{each_record}")
         print()
         option = input(menu)
+
+    save_data()
     print("----Thank you for using my app----")
 
 

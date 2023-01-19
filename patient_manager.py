@@ -1,7 +1,6 @@
 from patient import Patient
 from date_type import DateType
 
-
 class PatientManager:
     def __init__(self):
         self.patients = []
@@ -24,7 +23,7 @@ class PatientManager:
                 new_patient = Patient(patient_first_name, patient_last_name, patient_id, patient_age)
                 new_date = DateType(date_of_birth, admit_date, discharge_date)
                 self.patients.append(new_patient)
-                self.patients.append(new_date)
+                self.date_type.append(new_date)
 
     """def get_patient_name(self):
         with open("patient_detail.csv") as patient_file:
@@ -51,7 +50,9 @@ class PatientManager:
             return False
         else:
             new_boarding_patient = Patient(patient_first_name, patient_last_name, patient_id, patient_age)
+            new_date_type = DateType("00/00/0000","00/00/0000","00/00/0000")
             self.patients.append(new_boarding_patient)
+            self.date_type.append(new_date_type)
             return True
 
     def existing_patient(self, patient_id):
