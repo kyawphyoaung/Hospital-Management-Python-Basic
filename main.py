@@ -41,10 +41,6 @@ def display_all_patients(patients):
     for index,patient in enumerate(patients):
         print(f"{index:2} - {patient}")
 
-# def display_ledger(patients):
-#     for patient in patients:
-#         print([patient.get_name(),patient.get_id(),patient.get_age()])
-
 def add_new_patients(patient_manage):
     patient_first_name=input("Please enter the patient's first name ---> ")
     patient_last_name=input("Please enter the patient's last name ---> ")
