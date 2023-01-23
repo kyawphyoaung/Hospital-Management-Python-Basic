@@ -1,7 +1,9 @@
 import csv
+from datetime import date
 from doctor_manager import DoctorManager
 from patient_manager import PatientManager
 from bill_manager import Bill_Manager
+from date_type import DateType
 
 doctor_manage=DoctorManager()
 doctor_manage.load_doctor_detail()
@@ -45,8 +47,12 @@ def add_new_patients(patient_manage):
     patient_first_name=input("Please enter the patient's first name ---> ")
     patient_last_name=input("Please enter the patient's last name ---> ")
     patient_id=input("Please enter the patient's id ---> ")
-    patient_age=int(input("Please enter the patient's age ---> "))
-    patient_manage.add_new_boarding_patient(patient_first_name,patient_last_name,patient_id,patient_age)
+    input_dOB = input("Enter birth date with dd,mm,yyyy --->").split(",")
+    patient_dOB = DateType(input_dOB[0],input_dOB[1],input_dOB[2])
+    # Patient Age calculation
+    today = date.today()
+    patient_age = today.year - int(input_dOB[2]) - ((today.month, today.day) < (int(input_dOB[1]), int(input_dOB[0])))
+    patient_manage.add_new_boarding_patient(patient_first_name,patient_last_name,patient_id,patient_age,patient_dOB)
 
 def discharge_patients(patient_manage):
     patient_id= input("Please enter the patient's Id to discharge from the hospital ---> ")
@@ -60,8 +66,11 @@ def show_option_patient(patient_menu):
     elif patient_sub_option == "2":
         add_new_patients(patient_manage)
     elif patient_sub_option == "3":
-        discharge_patients(patient_manage)
+        #Assign Doctor
+        print("Assign Doctor")
     elif patient_sub_option == "4":
+        discharge_patients(patient_manage)
+    elif patient_sub_option == "5":
         print("------Go back to the main-------")
     print("")
 
@@ -115,11 +124,14 @@ def main():
     doctor_menu = f"1. Show all doctor details\n" \
                   f"2. Add doctor details\n" \
                   f"3. Remove doctor detail\n" \
-                  f"4. Go back to the main\n"
+                  f"4. Go back to the main\n" \
+                  f">>"
     patient_menu=f"1. Show all patient detail\n" \
                  f"2. Add the new patient\n" \
-                 f"3. Discharge the patient\n" \
-                 f"4. Go back to the main\n"
+                 f"3. Assign Doctor\n" \
+                 f"4. Discharge the patient\n" \
+                 f"5. Go back to the main\n" \
+                 f">>"
     option = input(menu)
     while option != "5":
         if option == "1":

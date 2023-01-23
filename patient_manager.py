@@ -20,39 +20,16 @@ class PatientManager:
                 date_of_birth = date_data[4]
                 admit_date = date_data[5]
                 discharge_date = date_data[6]
-                new_patient = Patient(patient_first_name, patient_last_name, patient_id, patient_age)
-                new_date = DateType(date_of_birth, admit_date, discharge_date)
+                new_patient = Patient(patient_first_name, patient_last_name, patient_id, patient_age, date_of_birth, admit_date, discharge_date)
                 self.patients.append(new_patient)
-                self.date_type.append(new_date)
 
-    """def get_patient_name(self):
-        with open("patient_detail.csv") as patient_file:
-            patient_file.readline()
-            for line in patient_file.readlines():
-                patient_data = line.split(",")
-                patient_first_name = patient_data[0]
-                patient_last_name = patient_data[1]
-                new_patient = Patient(patient_first_name, patient_last_name, patient_id, patient_age)
-                new_date = DateType(date_of_birth, admit_date, discharge_date)
-                self.patients.append(new_patient)
-                self.patients.append(new_date)"""
-
-    """def load_date_detail(self):
-        with open("patient_detail.csv") as data_file:
-            data_file.readline()
-            for line in data_file.readlines():"""
-
-
-
-    def add_new_boarding_patient(self, patient_first_name, patient_last_name, patient_id, patient_age):
+    def add_new_boarding_patient(self, patient_first_name, patient_last_name, patient_id, patient_age,patient_dob):
         if self.existing_patient(patient_id):
             print("\n This patient ID is already at the hospital or is already taken. ")
             return False
         else:
-            new_boarding_patient = Patient(patient_first_name, patient_last_name, patient_id, patient_age)
-            new_date_type = DateType("00/00/0000","00/00/0000","00/00/0000")
+            new_boarding_patient = Patient(patient_first_name, patient_last_name, patient_id, patient_age,patient_dob,"00/00/0000","00/00/0000")
             self.patients.append(new_boarding_patient)
-            self.date_type.append(new_date_type)
             return True
 
     def existing_patient(self, patient_id):
