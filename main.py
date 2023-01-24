@@ -64,7 +64,7 @@ def show_selected_patient(patient_id):
             print(patient)
 
 def discharge_patient(patient_manage):
-    patient_id= input("Please enter the patient's Id to discharge from the hospital ---> ")
+    patient_id= input("Enter the patient's Id to discharge from the hospital ---> ")
     for patient in patient_manage.patients:
         if patient.get_id() == patient_id:
             patient_name = patient.get_name()
@@ -88,6 +88,19 @@ def discharge_patient(patient_manage):
         print("Your input is wrong!")
     show_selected_patient(patient_id)
 
+def attending_physician():
+    patient_id= input("Enter the patient's Id ---> ")
+    doctor_id= input("Enter the attending physician ID --->")
+    for patient in patient_manage.patients:
+        if patient.get_id() == patient_id:
+            patient_name = patient.get_name()
+            for doctor in doctor_manage.doctors:
+                if doctor.get_doctor_id() == doctor_id:
+                    doctor_name = doctor.get_name()
+                    patient.set_attending_physician(doctor)
+                    print(f'{patient_id} - {patient_name}s attending physician is {doctor_name}')
+                    show_selected_patient(patient_id)
+
 
 def show_option_patient(patient_menu):
     patient_sub_option = input(patient_menu)
@@ -97,7 +110,7 @@ def show_option_patient(patient_menu):
         add_new_patients(patient_manage)
     elif patient_sub_option == "3":
         #Assign Doctor
-        print("Assign Doctor")
+        attending_physician()
     elif patient_sub_option == "4":
         discharge_patient(patient_manage)
     elif patient_sub_option == "5":
