@@ -57,26 +57,37 @@ def add_new_patients(patient_manage):
     patient_age = today.year - int(input_dOB[2]) - ((today.month, today.day) < (int(input_dOB[1]), int(input_dOB[0])))
     patient_manage.add_new_boarding_patient(patient_first_name,patient_last_name,patient_id,patient_age,patient_dOB,admit_date,discharge_date)
 
-def discharge_patients(patient_manage):
+def show_selected_patient(patient_id):
+    for patient in patient_manage.patients:
+        if patient.get_id() == patient_id:
+            print('{:5}| {:14}| {:12}| {:4}| {:14}| {:12}| {:12}'.format("ID","Name","DateofBirth","Age","Physician","Admit Date","Dicharge Date"))
+            print(patient)
+
+def discharge_patient(patient_manage):
     patient_id= input("Please enter the patient's Id to discharge from the hospital ---> ")
     for patient in patient_manage.patients:
         if patient.get_id() == patient_id:
+            patient_name = patient.get_name()
+            print('{:5}| {:14}| {:12}| {:4}| {:14}| {:12}| {:12}'.format("ID","Name","DateofBirth","Age","Physician","Admit Date","Dicharge Date"))
             print(patient)
-    print("Do you want to discharge today or orther date?\n")
-    print("1. Today\n")
-    print("2. Input Date\n")
+    print("")
+    print("Do you want to discharge today or orther date?")
+    print("1. Today")
+    print("2. Input Date")
     discharge_opt = input(">>")
-    if(discharge_opt == 1):
+    if(discharge_opt == "1"):
         today = date.today()
-        discharge_date = today.day+","+today.month+","+today.year
+        discharge_date = str(today.day)+","+str(today.month)+","+str(today.year)
         patient_manage.discharge_patients(patient_id,discharge_date)
-    elif(discharge_opt == 2):
-        dicharge_date = input("Enter discharge date with dd,mm,yyyy --->")
-        patient_manage.discharge_patients(patient_id,dicharge_date)
+        print(f'{patient_id} - {patient_name} is dicharged on {discharge_date}')
+    elif(discharge_opt == "2"):
+        discharge_date = input("Enter discharge date with dd,mm,yyyy --->")
+        patient_manage.discharge_patients(patient_id,discharge_date)
+        print(f'{patient_id} - {patient_name} is dicharged on {discharge_date}')
     else:
         print("Your input is wrong!")
+    show_selected_patient(patient_id)
 
-    display_all_patients(patient_manage.patients)
 
 def show_option_patient(patient_menu):
     patient_sub_option = input(patient_menu)
@@ -88,7 +99,7 @@ def show_option_patient(patient_menu):
         #Assign Doctor
         print("Assign Doctor")
     elif patient_sub_option == "4":
-        discharge_patients(patient_manage)
+        discharge_patient(patient_manage)
     elif patient_sub_option == "5":
         print("------Go back to the main-------")
     print("")
@@ -134,7 +145,7 @@ def save_data():
 
         dicharge_date = f[0].get_discharge_date()
         dicharge_date_format = dicharge_date.__str__().replace(",","/").strip("\n")
-        
+
         dataset.write("{},{},{},{},{},{},{},{},{}\n".format(f[0].get_first_name(),f[0].get_last_name(),f[0].get_id(),f[0].get_age(),a_p_f_n,a_p_l_n,dob_format,admit_date_format,dicharge_date_format))
     print("Patient Data saved successfully!")
     dataset.close()

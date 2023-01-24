@@ -54,7 +54,6 @@ class PatientManager:
         for patient in self.patients:
             if patient.get_id() == patient_id:
                 patient.set_discharge_date(DateType(discharge[0],discharge[1],discharge[2]))
-                print(patient)
         
         return
 
