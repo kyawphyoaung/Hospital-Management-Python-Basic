@@ -1,6 +1,5 @@
 from doctor import Doctor
 
-
 class DoctorManager:
     def __init__(self):
         self.doctors = []

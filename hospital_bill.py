@@ -30,5 +30,6 @@ class HospitalBill:
         return self.__total_fee
 
     def __str__(self):
+        print('{:5}| {:7}| {:12}| {:12}| {:12}| {:12}'.format("ID","Name","Medicine Fee","Doctor Fee","Room Fee","Total Fee"))
         output = '{:5}| {:7}| {:12}| {:12}| {:12}| {:12}'.format(self.__patient_id,self.__first_name,self.__medicine_fee+"$",self.__doctor_fee+"$",self.__room_fee+"$",self.__total_fee.strip('\n')+"$")
         return output

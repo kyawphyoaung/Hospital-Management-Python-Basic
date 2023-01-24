@@ -40,8 +40,9 @@ def show_option_doctor(doctor_menu):
         print("------Go back to the main-------")
 
 def display_all_patients(patients):
+    print('{:5}| {:14}| {:12}| {:4}| {:14}| {:12}| {:12}'.format("ID","Name","DateofBirth","Age","Physician","Admit Date","Dicharge Date"))
     for index,patient in enumerate(patients):
-        print(f"{index:2} - {patient}")
+        print(patient)
 
 def add_new_patients(patient_manage):
     patient_first_name=input("Please enter the patient's first name ---> ")
@@ -51,8 +52,10 @@ def add_new_patients(patient_manage):
     patient_dOB = DateType(input_dOB[0],input_dOB[1],input_dOB[2])
     # Patient Age calculation
     today = date.today()
+    admit_date= DateType(today.day,today.month,today.year)
+    discharge_date = DateType("00","00","0000")
     patient_age = today.year - int(input_dOB[2]) - ((today.month, today.day) < (int(input_dOB[1]), int(input_dOB[0])))
-    patient_manage.add_new_boarding_patient(patient_first_name,patient_last_name,patient_id,patient_age,patient_dOB)
+    patient_manage.add_new_boarding_patient(patient_first_name,patient_last_name,patient_id,patient_age,patient_dOB,admit_date,discharge_date)
 
 def discharge_patients(patient_manage):
     patient_id= input("Please enter the patient's Id to discharge from the hospital ---> ")
@@ -101,9 +104,13 @@ def hospital_bill_fun():
 
 def save_data():
     dataset = open("patient_detail.csv", "w")
-    dataset.write("first_name,last_name,patient_id,age,date_of_birth,admit_date,discharge_date\n")
-    for f, b in zip(patient_manage.patients, patient_manage.date_type):
-        dataset.write("{},{},{},{},{},{},{}\n".format(f.get_first_name(),f.get_last_name(),f.get_id(),f.get_age(),b.get_date_of_birth(),b.get_admit_date(),b.get_discharge_date().strip('\n')))
+    dataset.write("first_name,last_name,patient_id,age,date_of_birth,A.P_fname,A.P_lname,admit_date,discharge_date\n")
+    for f in zip(patient_manage.patients):
+        attending_physician = f[0].get_attending_physician()
+        a_p_f_n = attending_physician.get_first_name()
+        a_p_l_n = attending_physician.get_last_name()
+        dicharge_date = f[0].get_discharge_date()
+        dataset.write("{},{},{},{},{},{},{},{},{}\n".format(f[0].get_first_name(),f[0].get_last_name(),f[0].get_id(),f[0].get_age(),a_p_f_n,a_p_l_n,f[0].get_date_of_birth(),f[0].get_admit_date(),dicharge_date.__str__().strip("\n")))
     print("Patient Data saved successfully!")
     dataset.close()
 
@@ -141,7 +148,6 @@ def main():
         elif option == "3":
             hospital_bill_fun()
         elif option == "4":
-            print('{:5}| {:7}| {:12}| {:12}| {:12}| {:12}'.format("ID","Name","Medicine Fee","Doctor Fee","Room Fee","Total Fee"))
             for index,each_record in enumerate(bill_manage.ledger):
                 print(f"{each_record}")
         print()
