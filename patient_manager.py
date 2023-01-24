@@ -50,9 +50,10 @@ class PatientManager:
         return False
 
     def discharge_patients(self, patient_id,discharge_date):
+        discharge = discharge_date.split(",")
         for patient in self.patients:
             if patient.get_id() == patient_id:
-                patient.set_discharge_date(discharge_date)
+                patient.set_discharge_date(DateType(discharge[0],discharge[1],discharge[2]))
                 print(patient)
         
         return

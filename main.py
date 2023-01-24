@@ -59,7 +59,23 @@ def add_new_patients(patient_manage):
 
 def discharge_patients(patient_manage):
     patient_id= input("Please enter the patient's Id to discharge from the hospital ---> ")
-    patient_manage.discharge_patients(patient_id)
+    for patient in patient_manage.patients:
+        if patient.get_id() == patient_id:
+            print(patient)
+    print("Do you want to discharge today or orther date?\n")
+    print("1. Today\n")
+    print("2. Input Date\n")
+    discharge_opt = input(">>")
+    if(discharge_opt == 1):
+        today = date.today()
+        discharge_date = today.day+","+today.month+","+today.year
+        patient_manage.discharge_patients(patient_id,discharge_date)
+    elif(discharge_opt == 2):
+        dicharge_date = input("Enter discharge date with dd,mm,yyyy --->")
+        patient_manage.discharge_patients(patient_id,dicharge_date)
+    else:
+        print("Your input is wrong!")
+
     display_all_patients(patient_manage.patients)
 
 def show_option_patient(patient_menu):
@@ -109,8 +125,17 @@ def save_data():
         attending_physician = f[0].get_attending_physician()
         a_p_f_n = attending_physician.get_first_name()
         a_p_l_n = attending_physician.get_last_name()
+
+        doB = f[0].get_date_of_birth()
+        dob_format = doB.__str__().replace(",","/")
+
+        admit_date = f[0].get_admit_date()
+        admit_date_format = admit_date.__str__().replace(",","/")
+
         dicharge_date = f[0].get_discharge_date()
-        dataset.write("{},{},{},{},{},{},{},{},{}\n".format(f[0].get_first_name(),f[0].get_last_name(),f[0].get_id(),f[0].get_age(),a_p_f_n,a_p_l_n,f[0].get_date_of_birth(),f[0].get_admit_date(),dicharge_date.__str__().strip("\n")))
+        dicharge_date_format = dicharge_date.__str__().replace(",","/").strip("\n")
+        
+        dataset.write("{},{},{},{},{},{},{},{},{}\n".format(f[0].get_first_name(),f[0].get_last_name(),f[0].get_id(),f[0].get_age(),a_p_f_n,a_p_l_n,dob_format,admit_date_format,dicharge_date_format))
     print("Patient Data saved successfully!")
     dataset.close()
 

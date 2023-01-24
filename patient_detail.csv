@@ -1,5 +1,5 @@
 first_name,last_name,patient_id,age,date_of_birth,A.P_fname,A.P_lname,admit_date,discharge_date
-Conrad,Ray,P001,40,Chong,Ku ku,12,06,1982,12,01,2023,14,01,2023
-Gayle,Evans,P002,20,Billy,Drentlaw,24,08,2003,18,01,2023,19,01,2023
-Kellie,Hansen,P003,18,Eric,Bluestein,07,09,2005,14,01,2023,15,01,2023
-Nathan,James,P004,33,Cody,Rounkles,16,11,1989,20,01,2023,22,01,2023
+Conrad,Ray,P001,40,Chong,Ku ku,12/06/1982,12/01/2023,14/01/2023
+Gayle,Evans,P002,20,Billy,Drentlaw,24/08/2003,18/01/2023,19/01/2023
+Kellie,Hansen,P003,18,Eric,Bluestein,07/09/2005,14/01/2023,15/01/2023
+Nathan,James,P004,33,Cody,Rounkles,16/11/1989,20/01/2023,22/01/2023
